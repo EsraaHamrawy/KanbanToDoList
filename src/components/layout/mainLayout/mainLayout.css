@@ -1,0 +1,13 @@
+.board-page {
+  min-height: 100vh;
+  padding: 12px;
+  overflow-x: clip;
+}
+
+.board-frame {
+  min-height: calc(100vh - 24px);
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #f7f8f8;
+}

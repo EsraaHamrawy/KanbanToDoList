@@ -1,0 +1,46 @@
+.not-found-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.not-found-card {
+  width: min(100%, 28rem);
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
+}
+
+.not-found-card__eyebrow {
+  margin: 0 0 0.35rem;
+  color: #4f6be8;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+.not-found-card h1 {
+  margin: 0;
+  color: #1e2530;
+  font-size: 1.6rem;
+}
+
+.not-found-card p {
+  margin: 0.75rem 0 0;
+  color: #556170;
+  line-height: 1.6;
+}
+
+.not-found-card__link {
+  display: inline-flex;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: #4f6be8;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+}

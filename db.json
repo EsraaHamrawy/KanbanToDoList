@@ -1,0 +1,123 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "column": "backlog",
+      "title": "API integration",
+      "description": "Connect frontend to REST API endpoints.",
+      "priority": "High"
+    },
+    {
+      "id": "task-2",
+      "column": "backlog",
+      "title": "Unit tests",
+      "description": "Write tests for utility functions and hooks.",
+      "priority": "Low"
+    },
+    {
+      "id": "task-3",
+      "column": "backlog",
+      "title": "Performance audit",
+      "description": "Lighthouse scores and bundle analysis.",
+      "priority": "Low"
+    },
+    {
+      "id": "task-4",
+      "column": "backlog",
+      "title": "Notification system",
+      "description": "Toast notifications and in-app alerts.",
+      "priority": "Medium"
+    },
+    {
+      "id": "task-5",
+      "column": "backlog",
+      "title": "User settings page",
+      "description": "Profile editing, preferences, and account management.",
+      "priority": "Low"
+    },
+    {
+      "id": "task-6",
+      "column": "in_progress",
+      "title": "Authentication flow",
+      "description": "Implement login, signup, and password reset screens.",
+      "priority": "High"
+    },
+    {
+      "id": "task-7",
+      "column": "in_progress",
+      "title": "File upload component",
+      "description": "Drag and drop file upload with preview.",
+      "priority": "Medium"
+    },
+    {
+      "id": "task-8",
+      "column": "in_progress",
+      "title": "Activity timeline",
+      "description": "Show recent events inside the task panel.",
+      "priority": "Low"
+    },
+    {
+      "id": "task-9",
+      "column": "in_progress",
+      "title": "Inline validation",
+      "description": "Surface form errors before submit.",
+      "priority": "Low"
+    },
+    {
+      "id": "task-10",
+      "column": "review",
+      "title": "Dark mode support",
+      "description": "Add theme toggle and CSS variable switching.",
+      "priority": "Medium"
+    },
+    {
+      "id": "task-11",
+      "column": "review",
+      "title": "Dashboard layout",
+      "description": "Build responsive sidebar and main content area.",
+      "priority": "Medium"
+    },
+    {
+      "id": "task-12",
+      "column": "review",
+      "title": "Keyboard shortcuts",
+      "description": "Support quick actions from the board.",
+      "priority": "Low"
+    },
+    {
+      "id": "task-13",
+      "column": "review",
+      "title": "Board analytics",
+      "description": "Summarize task flow and throughput.",
+      "priority": "Low"
+    },
+    {
+      "id": "task-14",
+      "column": "done",
+      "title": "Design system tokens",
+      "description": "Set up color palette, typography, and spacing scales.",
+      "priority": "High"
+    },
+    {
+      "id": "task-15",
+      "column": "done",
+      "title": "Release notes",
+      "description": "Document the latest board improvements.",
+      "priority": "Low"
+    },
+    {
+      "id": "task-16",
+      "column": "done",
+      "title": "Accessibility pass",
+      "description": "Review focus states and keyboard paths.",
+      "priority": "Low"
+    },
+    {
+      "id": "feab8123-cb05-456a-9bb1-64aa3d12ff81",
+      "column": "done",
+      "title": "test",
+      "description": "test",
+      "priority": "High"
+    }
+  ]
+}

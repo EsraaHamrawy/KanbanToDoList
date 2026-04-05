@@ -1,0 +1,52 @@
+:root {
+  --text: #5f5b66;
+  --border: #d8cfc3;
+  font: 16px/1.5 'Avenir Next', 'Segoe UI', Candara, system-ui, sans-serif;
+  color: var(--text);
+  background: #f4f5f6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  background: #f4f5f6;
+}
+
+body,
+button,
+input {
+  font-family: inherit;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+}
+
+::selection {
+  color: #fff;
+  background: #4f6be8;
+}
