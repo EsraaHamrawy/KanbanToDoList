@@ -1,9 +1,9 @@
-// export const COLUMN_DEFS = [
-//   { key: 'backlog', label: 'To Do', accent: '#4f6be8' },
-//   { key: 'in_progress', label: 'In Progress', accent: '#f59e0b' },
-//   { key: 'review', label: 'In Review', accent: '#8b5cf6' },
-//   { key: 'done', label: 'Done', accent: '#22c55e' },
-// ]
+export const BOARD_COLUMNS = [
+  { key: 'backlog', label: 'To Do', accent: '#4f6be8' },
+  { key: 'in_progress', label: 'In Progress', accent: '#f59e0b' },
+  { key: 'review', label: 'In Review', accent: '#8b5cf6' },
+  { key: 'done', label: 'Done', accent: '#22c55e' },
+]
 
 // export const INITIAL_VISIBLE_COUNTS = {
 //   backlog: 3,
