@@ -1,4 +1,3 @@
-import { priorityToneMap } from '../boardConstants'
 import './TaskCard.css'
 
 export default function TaskCard({
@@ -12,8 +11,8 @@ export default function TaskCard({
   isDragging,
   isDropTarget,
 }) {
-  // const priorityTone = priorityToneMap[task.priority] || 'low'
-  const priorityTone = 'low'
+
+  const priorityTone = task.priority.toLowerCase() || 'low'
 
   return (
     <article
@@ -32,19 +31,16 @@ export default function TaskCard({
     >
       <div className="task-card__content">
         <h3 className="task-card__title">
-          title
-          {/* {task.title} */}
-          </h3>
+          {task.title}
+        </h3>
         <p className="task-card__description">
-          description
-          {/* {task.description} */}
-          </p>
+          {task.description}
+        </p>
       </div>
 
       <div className="task-card__footer">
         <span className={`task-card__badge task-card__badge--${priorityTone}`}>
-        priority
-          {/* {task.priority} */}
+          {task.priority}
         </span>
 
         <div className="task-card__actions">

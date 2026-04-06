@@ -36,7 +36,7 @@ extraReducers: (builder) => {
 })
 },
 })
-export const selectTotalTasks = (state) => state.tasks.items.length
+export const selectTotalTaskCards = (state) => state.tasks.items.length
 
 export default tasksSlice.reducer
 
