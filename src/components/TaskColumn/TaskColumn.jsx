@@ -1,7 +1,9 @@
+import TaskCard from '../TaskCard/TaskCard'
 import './TaskColumn.css'
 
 export default function TaskColumn({
-  column={},
+  column,
+  tasks = [],
   isDropTarget,
   onCreateTask = () => {},
   onColumnDragOver = () => {},
@@ -22,10 +24,14 @@ export default function TaskColumn({
           />
           <h2>{column.label}</h2>
         </div>
-        <span className="board-column__count">0</span>
+        <span className="board-column__count">{tasks.length}</span>
       </header>
 
-      <div className="board-column__cards" />
+      <div className="board-column__cards">
+        {tasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
+      </div>
 
       <button className="board-column__add" type="button" onClick={() => onCreateTask(column.key)}>
         + Add task
