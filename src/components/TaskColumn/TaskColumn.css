@@ -2,8 +2,10 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
-  align-items: start;
-  overflow-x: clip;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .board-column {
@@ -11,10 +13,12 @@
   flex-direction: column;
   gap: 10px;
   min-width: 0;
-  min-height: calc(100vh - 112px);
+  min-height: 0;
+  height: 100%;
   padding: 10px 8px 8px;
   border-radius: 10px;
   background: #eef2f1;
+  overflow: hidden;
 }
 
 .board-column--drop-target {
@@ -72,6 +76,39 @@
   display: grid;
   gap: 8px;
   min-width: 0;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-right: -2px;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(81, 96, 109, 0.4) transparent;
+}
+
+.board-column__cards::-webkit-scrollbar {
+  width: 10px;
+}
+
+.board-column__cards::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.board-column__cards::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(79, 107, 232, 0.52), rgba(81, 96, 109, 0.36));
+  background-clip: padding-box;
+}
+
+.board-column__cards::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(79, 107, 232, 0.72), rgba(81, 96, 109, 0.56));
+  background-clip: padding-box;
+}
+
+.board-column__cards::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .board-column__empty {
@@ -149,7 +186,7 @@
 }
 
 .board-column__add {
-  margin-top: 2px;
+  margin-top: auto;
   padding: 0.5rem 0.65rem;
   border: 1px dashed #d5dbe1;
   border-radius: 8px;
@@ -207,7 +244,7 @@
   }
 
   .board-column {
-    min-height: auto;
+    min-height: 0;
   }
 }
 

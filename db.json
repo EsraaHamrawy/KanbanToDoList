@@ -59,7 +59,7 @@
     {
       "id": "task-9",
       "column": "in_progress",
-      "title": "Inline validation",
+      "title": "Inline validation-1",
       "description": "Surface form errors before submit.",
       "priority": "Low"
     },
@@ -118,6 +118,13 @@
       "title": "test",
       "description": "test",
       "priority": "High"
+    },
+    {
+      "id": "c7da8359-595a-4466-b156-3a5e54596830",
+      "title": "test4",
+      "description": "test desc",
+      "priority": "High",
+      "column": "in_progress"
     }
   ]
 }

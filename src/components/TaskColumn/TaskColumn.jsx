@@ -6,6 +6,7 @@ export default function TaskColumn({
   tasks = [],
   isDropTarget,
   onCreateTask = () => {},
+  onOpenTaskDialog = () => {},
   onColumnDragOver = () => {},
   onColumnDrop = () => {},
 }) {
@@ -29,7 +30,7 @@ export default function TaskColumn({
 
       <div className="board-column__cards">
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard key={task.id} task={task} onOpenTaskDialog={onOpenTaskDialog} />
         ))}
       </div>
 

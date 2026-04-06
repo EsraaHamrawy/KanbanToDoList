@@ -1,13 +1,16 @@
 .board-page {
-  min-height: 100vh;
+  height: 100vh;
   padding: 12px;
-  overflow-x: clip;
+  overflow: hidden;
 }
 
 .board-frame {
-  min-height: calc(100vh - 24px);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 24px);
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: #f7f8f8;
+  overflow: hidden;
 }
