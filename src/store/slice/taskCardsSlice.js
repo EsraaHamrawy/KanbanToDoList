@@ -22,6 +22,20 @@ export const fetchTaskCards = createAsyncThunk('taskCards/fetchTaskCards', async
   return requestJson(TASKS_URL)
 })
 
+const normalizeTasks = (tasks) => {
+  const columnOrderMap = new Map()
+
+  return tasks.map((task) => {
+    const currentOrder = columnOrderMap.get(task.column) ?? 0
+    columnOrderMap.set(task.column, currentOrder + 1)
+
+    return {
+      ...task,
+      order: typeof task.order === 'number' ? task.order : currentOrder,
+    }
+  })
+}
+
 export const createTaskCard = createAsyncThunk('taskCards/createTaskCard', async (task) => {
   return requestJson(TASKS_URL, {
     method: 'POST',
@@ -44,6 +58,68 @@ export const deleteTaskCard = createAsyncThunk('taskCards/deleteTaskCard', async
   return taskId
 })
 
+export const moveTaskCard = createAsyncThunk(
+  'taskCards/moveTaskCard',
+  async ({ taskId, targetColumn, targetTaskId }) => {
+    const response = await fetch(TASKS_URL)
+
+    if (!response.ok) {
+      throw new Error('Request failed')
+    }
+
+    const tasks = normalizeTasks(await response.json())
+    const draggedTask = tasks.find((task) => task.id === taskId)
+
+    if (!draggedTask) {
+      throw new Error('Task not found')
+    }
+
+    const sourceColumn = draggedTask.column
+    const sourceTasks = tasks.filter((task) => task.column === sourceColumn && task.id !== taskId).sort((a, b) => a.order - b.order)
+    const destinationTasks = (sourceColumn === targetColumn ? sourceTasks : tasks.filter((task) => task.column === targetColumn)).sort((a, b) => a.order - b.order)
+
+    draggedTask.column = targetColumn
+
+    const insertIndex = targetTaskId
+      ? destinationTasks.findIndex((task) => task.id === targetTaskId)
+      : destinationTasks.length
+
+    if (insertIndex >= 0) {
+      destinationTasks.splice(insertIndex, 0, draggedTask)
+    } else {
+      destinationTasks.push(draggedTask)
+    }
+
+    const reindexedSource = sourceTasks.map((task, index) => ({ ...task, order: index }))
+    const reindexedDestination = destinationTasks.map((task, index) => ({ ...task, order: index }))
+
+    const updatedTasks = tasks.map((task) => {
+      if (task.column === sourceColumn) {
+        return reindexedSource.find((item) => item.id === task.id) ?? task
+      }
+
+      if (task.column === targetColumn) {
+        return reindexedDestination.find((item) => item.id === task.id) ?? task
+      }
+
+      return task
+    })
+
+    await Promise.all(
+      updatedTasks
+        .filter((task) => task.column === sourceColumn || task.column === targetColumn)
+        .map((task) =>
+          requestJson(`${TASKS_URL}/${task.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(task),
+          })
+        )
+    )
+
+    return updatedTasks
+  }
+)
+
 const initialState = {
   items: [],
   status: 'idle',
@@ -62,14 +138,19 @@ const taskCardsSlice = createSlice({
       })
       .addCase(fetchTaskCards.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.items = action.payload
+        state.items = normalizeTasks(action.payload)
       })
       .addCase(fetchTaskCards.rejected, (state, action) => {
         state.status = 'failed'
         state.error = action.error.message
       })
       .addCase(createTaskCard.fulfilled, (state, action) => {
-        state.items.unshift(action.payload)
+        const createdTask = {
+          ...action.payload,
+          order: typeof action.payload.order === 'number' ? action.payload.order : 0,
+        }
+
+        state.items.unshift(createdTask)
       })
       .addCase(updateTaskCard.fulfilled, (state, action) => {
         const index = state.items.findIndex((task) => task.id === action.payload.id)
@@ -80,6 +161,9 @@ const taskCardsSlice = createSlice({
       })
       .addCase(deleteTaskCard.fulfilled, (state, action) => {
         state.items = state.items.filter((task) => task.id !== action.payload)
+      })
+      .addCase(moveTaskCard.fulfilled, (state, action) => {
+        state.items = action.payload
       })
   },
 })

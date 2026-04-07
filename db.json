@@ -68,56 +68,64 @@
       "column": "review",
       "title": "Dark mode support",
       "description": "Add theme toggle and CSS variable switching.",
-      "priority": "Medium"
+      "priority": "Medium",
+      "order": 0
     },
     {
       "id": "task-11",
       "column": "review",
       "title": "Dashboard layout",
       "description": "Build responsive sidebar and main content area.",
-      "priority": "Medium"
+      "priority": "Medium",
+      "order": 1
     },
     {
       "id": "task-12",
       "column": "review",
       "title": "Keyboard shortcuts",
       "description": "Support quick actions from the board.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 2
     },
     {
       "id": "task-13",
       "column": "review",
       "title": "Board analytics",
       "description": "Summarize task flow and throughput.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 3
     },
     {
       "id": "task-14",
       "column": "done",
       "title": "Design system tokens",
       "description": "Set up color palette, typography, and spacing scales.",
-      "priority": "High"
+      "priority": "High",
+      "order": 0
     },
     {
       "id": "task-15",
       "column": "done",
       "title": "Release notes",
       "description": "Document the latest board improvements.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 1
     },
     {
       "id": "task-16",
       "column": "done",
       "title": "Accessibility pass",
       "description": "Review focus states and keyboard paths.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 2
     },
     {
       "id": "feab8123-cb05-456a-9bb1-64aa3d12ff81",
       "column": "done",
       "title": "test",
       "description": "test",
-      "priority": "High"
+      "priority": "High",
+      "order": 3
     },
     {
       "id": "c7da8359-595a-4466-b156-3a5e54596830",

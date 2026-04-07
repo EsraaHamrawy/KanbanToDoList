@@ -5,10 +5,16 @@ export default function TaskColumn({
   column,
   tasks = [],
   isDropTarget,
-  onCreateTask = () => {},
   onOpenTaskDialog = () => {},
+  onCreateTask = () => {},
   onColumnDragOver = () => {},
   onColumnDrop = () => {},
+  onTaskDragStart = () => {},
+  onTaskDragEnd = () => {},
+  onTaskDragOver = () => {},
+  onTaskDrop = () => {},
+  draggingTaskId,
+  dropTaskId,
 }) {
   return (
     <article
@@ -30,7 +36,17 @@ export default function TaskColumn({
 
       <div className="board-column__cards">
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} onOpenTaskDialog={onOpenTaskDialog} />
+          <TaskCard
+            key={task.id}
+            task={task}
+            onOpenTaskDialog={onOpenTaskDialog}
+            onDragStart={onTaskDragStart}
+            onDragEnd={onTaskDragEnd}
+            onDragOver={onTaskDragOver}
+            onDrop={onTaskDrop}
+            isDragging={draggingTaskId === task.id}
+            isDropTarget={dropTaskId === task.id}
+          />
         ))}
       </div>
 
