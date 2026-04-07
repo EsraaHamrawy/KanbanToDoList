@@ -5,35 +5,40 @@
       "column": "backlog",
       "title": "API integration",
       "description": "Connect frontend to REST API endpoints.",
-      "priority": "High"
+      "priority": "High",
+      "order": 0
     },
     {
       "id": "task-2",
       "column": "backlog",
       "title": "Unit tests",
       "description": "Write tests for utility functions and hooks.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 1
     },
     {
       "id": "task-3",
       "column": "backlog",
       "title": "Performance audit",
       "description": "Lighthouse scores and bundle analysis.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 2
     },
     {
       "id": "task-4",
       "column": "backlog",
       "title": "Notification system",
       "description": "Toast notifications and in-app alerts.",
-      "priority": "Medium"
+      "priority": "Medium",
+      "order": 3
     },
     {
       "id": "task-5",
       "column": "backlog",
       "title": "User settings page",
       "description": "Profile editing, preferences, and account management.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 4
     },
     {
       "id": "task-6",
@@ -49,7 +54,7 @@
       "title": "File upload component",
       "description": "Drag and drop file upload with preview.",
       "priority": "Medium",
-      "order": 1
+      "order": 2
     },
     {
       "id": "task-8",
@@ -57,7 +62,7 @@
       "title": "Activity timeline",
       "description": "Show recent events inside the task panel.",
       "priority": "Low",
-      "order": 2
+      "order": 3
     },
     {
       "id": "task-9",
@@ -65,7 +70,7 @@
       "title": "Inline validation-1",
       "description": "Surface form errors before submit.",
       "priority": "Low",
-      "order": 3
+      "order": 4
     },
     {
       "id": "task-10",
@@ -137,7 +142,23 @@
       "description": "test desc",
       "priority": "High",
       "column": "in_progress",
-      "order": 4
+      "order": 5
+    },
+    {
+      "id": "0d13de46-ae7b-492a-b181-541e64ea78ca",
+      "title": "test",
+      "description": "test",
+      "priority": "High",
+      "column": "in_progress",
+      "order": 1
+    },
+    {
+      "id": "d54deb6a-ac70-46d9-b1ab-80d493336f01",
+      "title": "to do test",
+      "description": "test",
+      "priority": "High",
+      "column": "in_progress",
+      "order": 6
     }
   ]
 }

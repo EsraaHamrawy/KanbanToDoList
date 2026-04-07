@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { API_BASE_URL } from '../../config/api'
 
 export const fetchTasks =  createAsyncThunk ('tasks/fetchTasks', async () => {
-  const response = await fetch('http://localhost:3002/tasks')
+  const response = await fetch(`${API_BASE_URL}/tasks`)
   if (!response.ok) {
     throw new Error('Failed to fetch tasks')
   }

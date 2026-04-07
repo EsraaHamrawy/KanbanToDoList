@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { API_BASE_URL } from '../../config/api'
 
-const TASKS_URL = 'http://localhost:3002/tasks'
+const TASKS_URL = `${API_BASE_URL}/tasks`
 
 const requestJson = async (url, options = {}) => {
   const response = await fetch(url, {
