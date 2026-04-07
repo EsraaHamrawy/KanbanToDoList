@@ -11,6 +11,7 @@ export default function BoardPage() {
   const dispatch = useDispatch()
   const totalTasks = useSelector(selectTotalTaskCards)
   const taskCards = useSelector(selectTaskCards)
+  const [searchTerm, setSearchTerm] = useState('')
   const [dialogState, setDialogState] = useState({
     open: false,
     action: 'add',
@@ -25,13 +26,25 @@ export default function BoardPage() {
   })
 
   const tasksByColumn = useMemo(() => {
+      const normalizedSearchTerm = searchTerm.trim().toLowerCase()
+    const filteredTasks = normalizedSearchTerm
+      ? taskCards.filter((task) => {
+          const searchableText = `${task.title} ${task.description}`.toLowerCase()
+
+          return searchableText.includes(normalizedSearchTerm)
+        })
+      : taskCards
     return BOARD_COLUMNS.map((column) => ({
       ...column,
-      tasks: taskCards
+      tasks: filteredTasks
         .filter((task) => task.column === column.key)
         .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
     }))
-  }, [taskCards])
+  }, [taskCards, searchTerm])
+
+const trimmedSearchTerm = searchTerm.trim()
+  const visibleTaskCount = tasksByColumn.reduce((count, column) => count + column.tasks.length, 0)
+  const isSearching = trimmedSearchTerm.length > 0
 
   const [draggingTaskId, setDraggingTaskId] = useState(null)
   const [dropTaskId, setDropTaskId] = useState(null)
@@ -206,11 +219,11 @@ export default function BoardPage() {
     <main className="board-page">
       <section className="board-frame" aria-labelledby="board-title">
         <Header
-          searchTerm=""
+          searchTerm={searchTerm}
           totalTasks={totalTasks}
-          visibleTaskCount={0}
-          isSearching={false}
-          onSearchChange={() => {}}
+          visibleTaskCount={visibleTaskCount}
+          isSearching={isSearching}
+          onSearchChange={setSearchTerm}
         />
 
         <section className="board-grid" aria-label="Task columns">

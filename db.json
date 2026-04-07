@@ -40,28 +40,32 @@
       "column": "in_progress",
       "title": "Authentication flow",
       "description": "Implement login, signup, and password reset screens.",
-      "priority": "High"
+      "priority": "High",
+      "order": 0
     },
     {
       "id": "task-7",
       "column": "in_progress",
       "title": "File upload component",
       "description": "Drag and drop file upload with preview.",
-      "priority": "Medium"
+      "priority": "Medium",
+      "order": 1
     },
     {
       "id": "task-8",
       "column": "in_progress",
       "title": "Activity timeline",
       "description": "Show recent events inside the task panel.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 2
     },
     {
       "id": "task-9",
       "column": "in_progress",
       "title": "Inline validation-1",
       "description": "Surface form errors before submit.",
-      "priority": "Low"
+      "priority": "Low",
+      "order": 3
     },
     {
       "id": "task-10",
@@ -132,7 +136,8 @@
       "title": "test4",
       "description": "test desc",
       "priority": "High",
-      "column": "in_progress"
+      "column": "in_progress",
+      "order": 4
     }
   ]
 }
