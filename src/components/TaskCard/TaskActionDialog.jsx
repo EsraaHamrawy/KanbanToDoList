@@ -13,15 +13,15 @@ import { BOARD_COLUMNS, PRIORITY_OPTIONS } from '../boardConstants'
 
 export default function TaskActionDialog({
   open,
-  mode,
+  action,
   task,
   formValues,
   onFormChange,
   onClose,
   onConfirm,
 }) {
-  const isEditMode = mode === 'edit'
-  const isAddMode = mode === 'add'
+  const isEditMode = action === 'edit'
+  const isAddMode = action === 'add'
   const dialogTitle = isAddMode ? 'Add task' : isEditMode ? 'Edit task' : 'Delete task?'
 
   return (
