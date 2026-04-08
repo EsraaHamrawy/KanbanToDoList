@@ -14,7 +14,7 @@
       "title": "Unit tests",
       "description": "Write tests for utility functions and hooks.",
       "priority": "Low",
-      "order": 1
+      "order": 2
     },
     {
       "id": "task-3",
@@ -22,7 +22,7 @@
       "title": "Performance audit",
       "description": "Lighthouse scores and bundle analysis.",
       "priority": "Low",
-      "order": 2
+      "order": 3
     },
     {
       "id": "task-4",
@@ -30,7 +30,7 @@
       "title": "Notification system",
       "description": "Toast notifications and in-app alerts.",
       "priority": "Medium",
-      "order": 3
+      "order": 4
     },
     {
       "id": "task-5",
@@ -38,7 +38,7 @@
       "title": "User settings page",
       "description": "Profile editing, preferences, and account management.",
       "priority": "Low",
-      "order": 4
+      "order": 5
     },
     {
       "id": "task-6",
@@ -127,38 +127,6 @@
       "description": "Review focus states and keyboard paths.",
       "priority": "Low",
       "order": 2
-    },
-    {
-      "id": "feab8123-cb05-456a-9bb1-64aa3d12ff81",
-      "column": "done",
-      "title": "test",
-      "description": "test",
-      "priority": "High",
-      "order": 3
-    },
-    {
-      "id": "c7da8359-595a-4466-b156-3a5e54596830",
-      "title": "test4",
-      "description": "test desc",
-      "priority": "High",
-      "column": "in_progress",
-      "order": 5
-    },
-    {
-      "id": "0d13de46-ae7b-492a-b181-541e64ea78ca",
-      "title": "test",
-      "description": "test",
-      "priority": "High",
-      "column": "in_progress",
-      "order": 1
-    },
-    {
-      "id": "d54deb6a-ac70-46d9-b1ab-80d493336f01",
-      "title": "to do test",
-      "description": "test",
-      "priority": "High",
-      "column": "in_progress",
-      "order": 6
     }
   ]
 }

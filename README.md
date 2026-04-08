@@ -1,20 +1,9 @@
-<<<<<<< HEAD
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
 # KanbanToDoList
->>>>>>> 087dba025b326fb36196616312ef21ac0a12b88f
+
+A simple Kanban-style task board built with React, Vite, Redux Toolkit, and json-server.
+
+## Deploy API on Render
+
+1. Create a new Web Service on Render from this repo.
+2. Use the included `render.yaml` or set the start command to `npx json-server --watch db.json --host 0.0.0.0 --port $PORT`.
+3. After deploy, copy the Render URL and set `VITE_API_URL` in Vercel to that URL.
