@@ -23,6 +23,16 @@
   box-shadow: 0 0 0 3px rgba(79, 107, 232, 0.08);
 }
 
+.task-card--skeleton {
+  gap: 10px;
+  pointer-events: none;
+}
+
+.task-card--skeleton .task-card__content,
+.task-card--skeleton .task-card__footer {
+  width: 100%;
+}
+
 .task-card__content {
   display: flex;
   flex-direction: column;

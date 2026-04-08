@@ -16,6 +16,7 @@ export default function TaskActionDialog({
   action,
   task,
   formValues,
+  errors = {},
   onFormChange,
   onClose,
   onConfirm,
@@ -36,6 +37,9 @@ export default function TaskActionDialog({
               value={formValues.title}
               onChange={(event) => onFormChange('title', event.target.value)}
               fullWidth
+              required
+              error={Boolean(errors.title)}
+              helperText={errors.title ? 'Title is required' : ' '}
             />
             <TextField
               label="Description"
@@ -44,6 +48,9 @@ export default function TaskActionDialog({
               fullWidth
               multiline
               minRows={3}
+              required
+              error={Boolean(errors.description)}
+              helperText={errors.description ? 'Description is required' : ' '}
             />
             <TextField
               select

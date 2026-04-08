@@ -3,7 +3,7 @@ import TaskColumn from './TaskColumn/TaskColumn.jsx'
 import { BOARD_COLUMNS } from './boardConstants'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {createTaskCard, deleteTaskCard, fetchTaskCards, moveTaskCard, selectTaskCards, selectTotalTaskCards, updateTaskCard } from './../store/slice/taskCardsSlice'
+import { createTaskCard, deleteTaskCard, fetchTaskCards, moveTaskCard, selectTaskCards, selectTaskCardsStatus, selectTotalTaskCards, updateTaskCard } from './../store/slice/taskCardsSlice'
 import TaskActionDialog from './TaskCard/TaskActionDialog'
 import { PRIORITY_OPTIONS } from './boardConstants'
 
@@ -11,12 +11,18 @@ export default function BoardPage() {
   const dispatch = useDispatch()
   const totalTasks = useSelector(selectTotalTaskCards)
   const taskCards = useSelector(selectTaskCards)
+  const taskCardsStatus = useSelector(selectTaskCardsStatus)
+  const isInitialLoading = taskCardsStatus === 'loading' && taskCards.length === 0
   const [searchTerm, setSearchTerm] = useState('')
   const [dialogState, setDialogState] = useState({
     open: false,
     action: 'add',
     task: null,
     column: BOARD_COLUMNS[0].key,
+    errors: {
+      title: false,
+      description: false,
+    },
     formValues: {
       title: '',
       description: '',
@@ -60,6 +66,10 @@ const trimmedSearchTerm = searchTerm.trim()
       action: mode,
       task,
       column: columnKey,
+      errors: {
+        title: false,
+        description: false,
+      },
       formValues: {
         title: task?.title ?? '',
         description: task?.description ?? '',
@@ -76,6 +86,10 @@ const trimmedSearchTerm = searchTerm.trim()
   const handleDialogFormChange = (field, value) => {
     setDialogState((current) => ({
       ...current,
+      errors: {
+        ...current.errors,
+        [field]: false,
+      },
       formValues: {
         ...current.formValues,
         [field]: value,
@@ -85,6 +99,20 @@ const trimmedSearchTerm = searchTerm.trim()
 
   const handleDialogConfirm = async () => {
     const { action, task, formValues } = dialogState
+    const title = formValues.title.trim()
+    const description = formValues.description.trim()
+
+    if (!title || !description) {
+      setDialogState((current) => ({
+        ...current,
+        errors: {
+          title: !title,
+          description: !description,
+        },
+      }))
+
+      return
+    }
 
     if (action === 'add') {
       const nextOrder = taskCards
@@ -94,8 +122,8 @@ const trimmedSearchTerm = searchTerm.trim()
       await dispatch(
         createTaskCard({
           id: crypto.randomUUID(),
-          title: formValues.title.trim(),
-          description: formValues.description.trim(),
+          title,
+          description,
           priority: formValues.priority,
           column: formValues.column,
           order: nextOrder,
@@ -117,8 +145,8 @@ const trimmedSearchTerm = searchTerm.trim()
       await dispatch(
         updateTaskCard({
           ...task,
-          title: formValues.title.trim(),
-          description: formValues.description.trim(),
+          title,
+          description,
           priority: formValues.priority,
           column: nextColumn,
           order: nextOrder,
@@ -142,7 +170,7 @@ const trimmedSearchTerm = searchTerm.trim()
 
   const handleTaskDragEnd = () => {
     setDraggingTaskId(null)
-    setDropTaskId(null).
+    setDropTaskId(null)
     setDropColumnKey(null)
   }
 
@@ -232,6 +260,7 @@ const trimmedSearchTerm = searchTerm.trim()
               key={column.key}
               column={column}
               tasks={column.tasks}
+              isLoading={isInitialLoading}
               onOpenTaskDialog={(mode, task) => openTaskDialog(mode, task, column.key)}
               onCreateTask={(columnKey) => openTaskDialog('add', null, columnKey)}
               onColumnDragOver={handleColumnDragOver}
@@ -253,6 +282,7 @@ const trimmedSearchTerm = searchTerm.trim()
         action={dialogState.action}
         task={dialogState.task ?? { title: '', description: '' }}
         formValues={dialogState.formValues}
+        errors={dialogState.errors}
         onFormChange={handleDialogFormChange}
         onClose={closeTaskDialog}
         onConfirm={handleDialogConfirm}

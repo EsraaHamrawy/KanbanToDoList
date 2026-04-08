@@ -170,6 +170,7 @@ const taskCardsSlice = createSlice({
 })
 
 export const selectTaskCards = (state) => state.taskCards.items
+export const selectTaskCardsStatus = (state) => state.taskCards.status
 export const selectTotalTaskCards = (state) => state.taskCards.items.length
 
 export default taskCardsSlice.reducer
