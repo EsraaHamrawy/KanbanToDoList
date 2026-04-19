@@ -5,3 +5,15 @@ services:
     plan: free
     buildCommand: npm install
     startCommand: npm start
+
+  - type: static_site
+    name: todo-frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: todo-json-api
+          property: host

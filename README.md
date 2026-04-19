@@ -2,8 +2,18 @@
 
 A simple Kanban-style task board built with React, Vite, Redux Toolkit, and json-server.
 
-## Deploy API on Render
+## Deploy on Render
 
-1. Create a new Web Service on Render from this repo.
-2. Use the included `render.yaml` or set the start command to `npx json-server --watch db.json --host 0.0.0.0 --port $PORT`.
-3. After deploy, copy the Render URL and set `VITE_API_URL` in Vercel to that URL.
+This repo uses two services:
+
+1. **API**: Web Service running `json-server`
+2. **Frontend**: Static Site running Vite build output
+
+Use the included `render.yaml` to create both services automatically.
+
+If you deploy them manually:
+- API build command: `npm install`
+- API start command: `npm start`
+- Frontend build command: `npm install && npm run build`
+- Frontend publish directory: `dist`
+- Frontend env var: `VITE_API_URL=https://your-api-name.onrender.com`
