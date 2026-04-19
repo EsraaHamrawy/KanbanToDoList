@@ -2,6 +2,12 @@
 
 A simple Kanban-style task board built with React, Vite, Redux Toolkit, and json-server.
 
+## Run locally
+
+- `npm run dev` starts both the Vite app and json-server together
+- `npm run dev:client` starts only the frontend
+- `npm run dev:server` starts only the API
+
 ## Deploy on Render
 
 This repo uses two services:

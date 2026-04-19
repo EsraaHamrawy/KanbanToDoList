@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "vite",
+    "dev:server": "json-server --watch db.json --port 3002",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -32,6 +34,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "concurrently": "^9.2.1",
     "vite": "^8.0.1"
   }
 }
