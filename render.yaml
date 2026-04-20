@@ -1,8 +1,9 @@
 services:
   - type: web
-    name: todo-json-api
+    name: todo-backend
     env: node
     plan: free
+    rootDir: backend
     buildCommand: npm install
     startCommand: npm start
 
@@ -15,5 +16,5 @@ services:
       - key: VITE_API_URL
         fromService:
           type: web
-          name: todo-json-api
+          name: todo-backend
           property: host
