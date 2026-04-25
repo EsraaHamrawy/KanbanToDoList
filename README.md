@@ -8,7 +8,14 @@ A simple Kanban-style task board built with React, Vite, Redux Toolkit, and a se
 - `npm run dev:client` starts only the frontend
 - `npm run dev:server` starts only the backend
 
-The backend lives in `backend/` and has its own `package.json`, `server.js`, routes, controllers, middleware, and data store.
+The backend lives in `backend/` and uses PostgreSQL via Prisma, so create/update/delete/drag-and-drop work reliably in production.
+
+Backend env vars:
+- `DATABASE_URL`
+- `PORT`
+- `CORS_ORIGIN`
+
+If you deploy on Render, the included `render.yaml` provisions PostgreSQL and pushes the schema automatically.
 
 ## Deploy on Render
 
