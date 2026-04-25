@@ -10,7 +10,7 @@ services:
     env: node
     plan: free
     rootDir: backend
-    buildCommand: npm install && npm run db:push
+    buildCommand: npm install && npm run db:migrate:deploy
     startCommand: npm start
     envVars:
       - key: DATABASE_URL
