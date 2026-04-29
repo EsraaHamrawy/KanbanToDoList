@@ -3,7 +3,7 @@ const isProduction = import.meta.env.PROD
 const fallbackApiBaseUrl = 'http://localhost:3002'
 
 if (isProduction && !rawApiBaseUrl) {
-  console.error('Missing VITE_API_URL in production build. Falling back to localhost (will fail in published environments).')
+  throw new Error('Missing VITE_API_URL in production build')
 }
 
 const selectedApiBaseUrl = rawApiBaseUrl || fallbackApiBaseUrl
