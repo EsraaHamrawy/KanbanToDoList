@@ -17,6 +17,8 @@ Backend env vars:
 
 If you deploy on Render, the included `render.yaml` provisions PostgreSQL and pushes the schema automatically.
 
+For a separate production repo, commit Prisma migrations and run `npm run db:migrate:deploy` during build.
+
 ## Deploy on Render
 
 This repo uses two services:
