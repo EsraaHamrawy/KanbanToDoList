@@ -71,7 +71,7 @@ const normalizeTasks = (tasks) => {
   const columnOrderMap = new Map()
 
   return tasks.map((task) => {
-    const normalizedColumn = normalizeColumnKey(task.column)
+    const normalizedColumn = normalizeColumnKey(task.column ?? (task.completed ? 'done' : 'backlog'))
     const currentOrder = columnOrderMap.get(normalizedColumn) ?? 0
     columnOrderMap.set(normalizedColumn, currentOrder + 1)
 
@@ -89,10 +89,15 @@ export const createTaskCard = createAsyncThunk('taskCards/createTaskCard', async
     body: JSON.stringify({
       ...task,
       column: normalizeColumnKey(task.column),
+      completed: normalizeColumnKey(task.column) === 'done',
     }),
   })
 
-  return createdTask ?? task
+  return {
+    ...task,
+    ...(createdTask || {}),
+    column: normalizeColumnKey(createdTask?.column ?? task.column),
+  }
 })
 
 export const updateTaskCard = createAsyncThunk('taskCards/updateTaskCard', async (task) => {
@@ -101,10 +106,15 @@ export const updateTaskCard = createAsyncThunk('taskCards/updateTaskCard', async
     body: JSON.stringify({
       ...task,
       column: normalizeColumnKey(task.column),
+      completed: normalizeColumnKey(task.column) === 'done',
     }),
   })
 
-  return updatedTask ?? task
+  return {
+    ...task,
+    ...(updatedTask || {}),
+    column: normalizeColumnKey(updatedTask?.column ?? task.column),
+  }
 })
 
 export const deleteTaskCard = createAsyncThunk('taskCards/deleteTaskCard', async (taskId) => {
@@ -117,25 +127,21 @@ export const deleteTaskCard = createAsyncThunk('taskCards/deleteTaskCard', async
 
 export const moveTaskCard = createAsyncThunk(
   'taskCards/moveTaskCard',
-  async ({ taskId, targetColumn, targetTaskId }) => {
-    const response = await fetch(TASKS_URL)
-
-    if (!response.ok) {
-      throw new Error('Request failed')
-    }
-
-    const tasks = normalizeTasks(await response.json())
+  async ({ taskId, targetColumn, targetTaskId }, { getState }) => {
+    const stateTasks = getState().taskCards?.items || []
+    const tasks = normalizeTasks(stateTasks)
     const draggedTask = tasks.find((task) => task.id === taskId)
 
     if (!draggedTask) {
       throw new Error('Task not found')
     }
 
+    const normalizedTargetColumn = normalizeColumnKey(targetColumn)
     const sourceColumn = draggedTask.column
     const sourceTasks = tasks.filter((task) => task.column === sourceColumn && task.id !== taskId).sort((a, b) => a.order - b.order)
-    const destinationTasks = (sourceColumn === targetColumn ? sourceTasks : tasks.filter((task) => task.column === targetColumn)).sort((a, b) => a.order - b.order)
+    const destinationTasks = (sourceColumn === normalizedTargetColumn ? sourceTasks : tasks.filter((task) => task.column === normalizedTargetColumn)).sort((a, b) => a.order - b.order)
 
-    draggedTask.column = targetColumn
+    draggedTask.column = normalizedTargetColumn
 
     const insertIndex = targetTaskId
       ? destinationTasks.findIndex((task) => task.id === targetTaskId)
@@ -155,7 +161,7 @@ export const moveTaskCard = createAsyncThunk(
         return reindexedSource.find((item) => item.id === task.id) ?? task
       }
 
-      if (task.column === targetColumn) {
+      if (task.column === normalizedTargetColumn) {
         return reindexedDestination.find((item) => item.id === task.id) ?? task
       }
 
@@ -164,11 +170,14 @@ export const moveTaskCard = createAsyncThunk(
 
     await Promise.all(
       updatedTasks
-        .filter((task) => task.column === sourceColumn || task.column === targetColumn)
+        .filter((task) => task.column === sourceColumn || task.column === normalizedTargetColumn)
         .map((task) =>
           requestJson(`${TASKS_URL}/${task.id}`, {
             method: 'PUT',
-            body: JSON.stringify(task),
+            body: JSON.stringify({
+              ...task,
+              completed: normalizeColumnKey(task.column) === 'done',
+            }),
           })
         )
     )
