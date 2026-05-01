@@ -3,6 +3,47 @@ import { API_BASE_URL } from '../../config/api'
 
 const TASKS_URL = `${API_BASE_URL}/tasks`
 
+const COLUMN_ALIASES = {
+  backlog: 'backlog',
+  todo: 'backlog',
+  to_do: 'backlog',
+  'to-do': 'backlog',
+  in_progress: 'in_progress',
+  inprogress: 'in_progress',
+  'in-progress': 'in_progress',
+  review: 'review',
+  in_review: 'review',
+  'in-review': 'review',
+  done: 'done',
+  completed: 'done',
+}
+
+const normalizeColumnKey = (column) => {
+  if (!column) return 'backlog'
+  const normalized = String(column).trim().toLowerCase().replace(/\s+/g, '_')
+  return COLUMN_ALIASES[normalized] ?? 'backlog'
+}
+
+const parseResponseBody = async (response) => {
+  if (response.status === 204) {
+    return null
+  }
+
+  const contentType = response.headers.get('content-type') || ''
+  const contentLength = response.headers.get('content-length')
+
+  if (contentLength === '0') {
+    return null
+  }
+
+  if (contentType.includes('application/json')) {
+    return response.json()
+  }
+
+  const text = await response.text()
+  return text ? { message: text } : null
+}
+
 const requestJson = async (url, options = {}) => {
   const response = await fetch(url, {
     headers: {
@@ -12,11 +53,14 @@ const requestJson = async (url, options = {}) => {
     ...options,
   })
 
+  const body = await parseResponseBody(response)
+
   if (!response.ok) {
-    throw new Error('Request failed')
+    const errorMessage = body?.message || `Request failed with status ${response.status}`
+    throw new Error(errorMessage)
   }
 
-  return response.status === 204 ? null : response.json()
+  return body
 }
 
 export const fetchTaskCards = createAsyncThunk('taskCards/fetchTaskCards', async () => {
@@ -27,28 +71,40 @@ const normalizeTasks = (tasks) => {
   const columnOrderMap = new Map()
 
   return tasks.map((task) => {
-    const currentOrder = columnOrderMap.get(task.column) ?? 0
-    columnOrderMap.set(task.column, currentOrder + 1)
+    const normalizedColumn = normalizeColumnKey(task.column)
+    const currentOrder = columnOrderMap.get(normalizedColumn) ?? 0
+    columnOrderMap.set(normalizedColumn, currentOrder + 1)
 
     return {
       ...task,
+      column: normalizedColumn,
       order: typeof task.order === 'number' ? task.order : currentOrder,
     }
   })
 }
 
 export const createTaskCard = createAsyncThunk('taskCards/createTaskCard', async (task) => {
-  return requestJson(TASKS_URL, {
+  const createdTask = await requestJson(TASKS_URL, {
     method: 'POST',
-    body: JSON.stringify(task),
+    body: JSON.stringify({
+      ...task,
+      column: normalizeColumnKey(task.column),
+    }),
   })
+
+  return createdTask ?? task
 })
 
 export const updateTaskCard = createAsyncThunk('taskCards/updateTaskCard', async (task) => {
-  return requestJson(`${TASKS_URL}/${task.id}`, {
+  const updatedTask = await requestJson(`${TASKS_URL}/${task.id}`, {
     method: 'PUT',
-    body: JSON.stringify(task),
+    body: JSON.stringify({
+      ...task,
+      column: normalizeColumnKey(task.column),
+    }),
   })
+
+  return updatedTask ?? task
 })
 
 export const deleteTaskCard = createAsyncThunk('taskCards/deleteTaskCard', async (taskId) => {
@@ -146,18 +202,20 @@ const taskCardsSlice = createSlice({
         state.error = action.error.message
       })
       .addCase(createTaskCard.fulfilled, (state, action) => {
+        const normalizedTask = normalizeTasks([action.payload])[0]
         const createdTask = {
-          ...action.payload,
-          order: typeof action.payload.order === 'number' ? action.payload.order : 0,
+          ...normalizedTask,
+          order: typeof normalizedTask.order === 'number' ? normalizedTask.order : 0,
         }
 
         state.items.unshift(createdTask)
       })
       .addCase(updateTaskCard.fulfilled, (state, action) => {
-        const index = state.items.findIndex((task) => task.id === action.payload.id)
+        const normalizedTask = normalizeTasks([action.payload])[0]
+        const index = state.items.findIndex((task) => task.id === normalizedTask.id)
 
         if (index !== -1) {
-          state.items[index] = action.payload
+          state.items[index] = normalizedTask
         }
       })
       .addCase(deleteTaskCard.fulfilled, (state, action) => {
