@@ -11,6 +11,30 @@ import {
 } from '@mui/material'
 import { BOARD_COLUMNS, PRIORITY_OPTIONS } from '../boardConstants'
 
+const ACTION_UI = {
+  add: {
+    title: 'Add task',
+    idleLabel: 'Add',
+    loadingLabel: 'Adding...',
+    color: 'primary',
+    withForm: true,
+  },
+  edit: {
+    title: 'Edit task',
+    idleLabel: 'Save',
+    loadingLabel: 'Saving...',
+    color: 'primary',
+    withForm: true,
+  },
+  delete: {
+    title: 'Delete task?',
+    idleLabel: 'Delete',
+    loadingLabel: 'Deleting...',
+    color: 'error',
+    withForm: false,
+  },
+}
+
 export default function TaskActionDialog({
   open,
   action,
@@ -20,17 +44,20 @@ export default function TaskActionDialog({
   onFormChange,
   onClose,
   onConfirm,
+  isSubmittingAction = false,
 }) {
-  const isEditMode = action === 'edit'
-  const isAddMode = action === 'add'
-  const dialogTitle = isAddMode ? 'Add task' : isEditMode ? 'Edit task' : 'Delete task?'
-
+  const currentActionUi = ACTION_UI[action] || ACTION_UI.add
+  const isFormMode = currentActionUi.withForm
+  const dialogTitle = currentActionUi.title
+  const isFormInvalid = !formValues.title?.trim() || !formValues.description?.trim()
+  const isConfirmDisabled = isSubmittingAction || (isFormMode ? isFormInvalid : false)
+  const confirmLabel = isSubmittingAction ? currentActionUi.loadingLabel : currentActionUi.idleLabel
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth={isEditMode || isAddMode ? 'sm' : 'xs'}>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth={isFormMode ? 'sm' : 'xs'}>
       <DialogTitle>{dialogTitle}</DialogTitle>
 
       <DialogContent>
-        {isEditMode || isAddMode ? (
+        {isFormMode ? (
           <Stack spacing={2} sx={{ pt: 1 }}>
             <TextField
               label="Title"
@@ -90,10 +117,11 @@ export default function TaskActionDialog({
         <Button onClick={onClose}>Cancel</Button>
         <Button
           variant="contained"
-          color={isAddMode || isEditMode ? 'primary' : 'error'}
+          color={currentActionUi.color}
           onClick={onConfirm}
+          disabled={isConfirmDisabled}
         >
-          {isAddMode ? 'Add' : isEditMode ? 'Save' : 'Delete'}
+          {confirmLabel}
         </Button>
       </DialogActions>
     </Dialog>

@@ -55,6 +55,7 @@ const trimmedSearchTerm = searchTerm.trim()
   const [draggingTaskId, setDraggingTaskId] = useState(null)
   const [dropTaskId, setDropTaskId] = useState(null)
   const [dropColumnKey, setDropColumnKey] = useState(null)
+  const [isSubmittingAction, setIsSubmittingAction] = useState(false)
 
   useEffect(() => {
     dispatch(fetchTaskCards())
@@ -98,11 +99,25 @@ const trimmedSearchTerm = searchTerm.trim()
   }
 
   const handleDialogConfirm = async () => {
+    if (isSubmittingAction) {
+      return
+    }
+
     const { action, task, formValues } = dialogState
     const title = formValues.title.trim()
     const description = formValues.description.trim()
 
-    if (!title || !description) {
+    const runWithSubmittingState = async (callback) => {
+      try {
+        setIsSubmittingAction(true)
+        await callback()
+        closeTaskDialog()
+      } finally {
+        setIsSubmittingAction(false)
+      }
+    }
+
+    if ((action === 'add' || action === 'edit') && (!title || !description)) {
       setDialogState((current) => ({
         ...current,
         errors: {
@@ -119,17 +134,18 @@ const trimmedSearchTerm = searchTerm.trim()
         .filter((item) => item.column === formValues.column)
         .reduce((maxOrder, item) => Math.max(maxOrder, item.order ?? 0), -1) + 1
 
-      await dispatch(
-        createTaskCard({
-          id: crypto.randomUUID(),
-          title,
-          description,
-          priority: formValues.priority,
-          column: formValues.column,
-          order: nextOrder,
-        })
-      ).unwrap()
-      closeTaskDialog()
+      await runWithSubmittingState(async () => {
+        await dispatch(
+          createTaskCard({
+            id: crypto.randomUUID(),
+            title,
+            description,
+            priority: formValues.priority,
+            column: formValues.column,
+            order: nextOrder,
+          })
+        ).unwrap()
+      })
       return
     }
 
@@ -142,23 +158,25 @@ const trimmedSearchTerm = searchTerm.trim()
               .filter((item) => item.column === nextColumn && item.id !== task.id)
               .reduce((maxOrder, item) => Math.max(maxOrder, item.order ?? 0), -1) + 1
 
-      await dispatch(
-        updateTaskCard({
-          ...task,
-          title,
-          description,
-          priority: formValues.priority,
-          column: nextColumn,
-          order: nextOrder,
-        })
-      ).unwrap()
-      closeTaskDialog()
+      await runWithSubmittingState(async () => {
+        await dispatch(
+          updateTaskCard({
+            ...task,
+            title,
+            description,
+            priority: formValues.priority,
+            column: nextColumn,
+            order: nextOrder,
+          })
+        ).unwrap()
+      })
       return
     }
 
     if (action === 'delete' && task) {
-      await dispatch(deleteTaskCard(task.id)).unwrap()
-      closeTaskDialog()
+      await runWithSubmittingState(async () => {
+        await dispatch(deleteTaskCard(task.id)).unwrap()
+      })
     }
   }
 
@@ -286,6 +304,7 @@ const trimmedSearchTerm = searchTerm.trim()
         onFormChange={handleDialogFormChange}
         onClose={closeTaskDialog}
         onConfirm={handleDialogConfirm}
+        isSubmittingAction={isSubmittingAction}
       />
     </main>
   )
